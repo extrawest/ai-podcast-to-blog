@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 
+import { downloadRunnable } from "./DownloadRunnable";
+import { huggingFaceRunnable } from "./HuggingFaceRunnable";
+
 export const POST = async (req: Request) => {
   try {
     const { fileUrl } = await req.json();
@@ -13,9 +16,14 @@ export const POST = async (req: Request) => {
       );
     }
 
+    const response = await downloadRunnable
+      .pipe(huggingFaceRunnable)
+      .invoke({ url: fileUrl });
+
     return NextResponse.json({
       message: "Success",
       success: true,
+      data: response.text,
     });
   } catch (e) {
     console.log(e);
