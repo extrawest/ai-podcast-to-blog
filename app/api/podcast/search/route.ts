@@ -14,7 +14,7 @@ export const POST = async (req: Request): Promise<NextResponse> => {
         { status: 400 }
       );
     }
-    const response = await podcastIndexClient.searchPodcastsByTitle(query);
+    const response = await podcastIndexClient.getPodcastsByTitle(query);
 
     return NextResponse.json({
       message: "Success",

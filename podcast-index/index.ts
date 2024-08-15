@@ -41,7 +41,7 @@ class PodcastIndexCustomClient {
     });
   }
 
-  searchPodcastsByTitle(query: string) {
+  getPodcastsByTitle(query: string) {
     return this.axiosClient.get(`/search/bytitle?q=${query}&pretty`);
   }
 
