@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 
 import { downloadRunnable } from "./DownloadRunnable";
+import { translateRunnable } from "./TranslateRunnable";
 import { huggingFaceRunnable } from "./HuggingFaceRunnable";
-
+import { summarizationRunnable } from "./SummarizeRunnable";
 export const POST = async (req: Request) => {
   try {
-    const { fileUrl } = await req.json();
+    const { fileUrl, translateTo = "fr_FR" } = await req.json();
     if (!fileUrl) {
       return NextResponse.json(
         {
@@ -18,12 +19,24 @@ export const POST = async (req: Request) => {
 
     const response = await downloadRunnable
       .pipe(huggingFaceRunnable)
-      .invoke({ url: fileUrl });
+      .pipe(summarizationRunnable)
+      .pipe(translateRunnable)
+      .invoke(
+        { url: fileUrl },
+        {
+          configurable: {
+            translateTo,
+          },
+        }
+      );
 
     return NextResponse.json({
       message: "Success",
       success: true,
-      data: response.text,
+      data: {
+        text: response.text,
+        originalText: response.originalText,
+      },
     });
   } catch (e) {
     console.log(e);

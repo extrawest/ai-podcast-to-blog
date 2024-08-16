@@ -1,28 +1,36 @@
 import fs from "fs";
-import axios from "axios";
+import { HfInference } from "@huggingface/inference";
 import { Runnable, type RunnableConfig } from "@langchain/core/runnables";
 
-export class HuggingFaceRunnable extends Runnable<any, any, RunnableConfig> {
-  async invoke(input: any): Promise<any> {
+import { TextToSpechTypes, TextToSpechResultType } from "./types";
+
+const huggingfaceToken = process.env.HUGGING_FACE_TOKEN;
+
+const hf = new HfInference(huggingfaceToken);
+
+export class HuggingFaceRunnable extends Runnable<
+  TextToSpechTypes,
+  TextToSpechResultType,
+  RunnableConfig
+> {
+  async invoke(input: TextToSpechTypes): Promise<TextToSpechResultType> {
     try {
-      const { audioPath } = input;
-      if (!audioPath) {
+      const { url } = input;
+      if (!url) {
         throw new Error("Audio path is required");
       }
-      const audioBuffer = fs.readFileSync(audioPath);
-      const response = await axios.post(
-        "https://api-inference.huggingface.co/models/facebook/wav2vec2-base-960h",
-        audioBuffer,
+      const audioBuffer = fs.readFileSync(url);
+      const data = await hf.automaticSpeechRecognition(
         {
-          headers: {
-            Authorization: `Bearer ${process.env.HUGGING_FACE_TOKEN}`,
-            "Content-Type": "application/json",
-          },
+          model: "facebook/wav2vec2-base-960h",
+          data: audioBuffer,
+        },
+        {
+          wait_for_model: true,
         }
       );
-      const result = response.data;
       fs.unlinkSync("./tmp/temp-audio.mp3");
-      return result;
+      return data;
     } catch (error) {
       console.error("Error", error);
       throw new Error("Something went wrong while converting audio to text");

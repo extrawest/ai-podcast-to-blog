@@ -2,8 +2,14 @@ import fs from "fs";
 import axios from "axios";
 import { Runnable, type RunnableConfig } from "@langchain/core/runnables";
 
-export class DownloadRunnable extends Runnable<any, any, RunnableConfig> {
-  async invoke(input: any): Promise<any> {
+import { TextToSpechTypes } from "./types";
+
+export class DownloadRunnable extends Runnable<
+  TextToSpechTypes,
+  TextToSpechTypes,
+  RunnableConfig
+> {
+  async invoke(input: { url: string }): Promise<TextToSpechTypes> {
     try {
       const response = await axios({
         method: "GET",
@@ -15,9 +21,7 @@ export class DownloadRunnable extends Runnable<any, any, RunnableConfig> {
       response.data.pipe(writer);
 
       return new Promise((resolve, reject) => {
-        writer.on("finish", () =>
-          resolve({ audioPath: "./tmp/temp-audio.mp3" })
-        );
+        writer.on("finish", () => resolve({ url: "./tmp/temp-audio.mp3" }));
         writer.on("error", reject);
       });
     } catch (error) {
