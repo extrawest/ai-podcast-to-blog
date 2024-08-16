@@ -1,4 +1,5 @@
 export type PodcastSearchProps = {
-  onSearchChange: (search: string) => void;
   search: string;
+  onSearchChange: (search: string) => void;
+  disabled?: boolean;
 };
