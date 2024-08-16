@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ClerkProvider, SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
+
+import { ThemeProvider } from "@/components/theme-provider"
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+
 
 import "./globals.css";
 
@@ -19,14 +24,20 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`h-[100vh] ${inter.className}`}>
-          <SignedOut>
-            <SignInButton />
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-          {children}</body>
+        <body className={`h-[100vh] flex flex-col ${inter.className}`}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Header />
+            <div className="h-[calc(100vh-140px)] flex-grow overflow-scroll">
+              {children}
+            </div>
+            <Footer />
+          </ThemeProvider>
+        </body>
       </html>
     </ClerkProvider>
   );

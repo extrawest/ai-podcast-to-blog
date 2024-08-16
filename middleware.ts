@@ -3,7 +3,8 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 const isPublicRoute = createRouteMatcher([
   "/sign-in(.*)",
   "/sign-up(.*)",
-  "/api/spech-to-text/generate",
+  "/api/speech-to-text/generate",
+  "/api/text-to-speech/generate",
 ]);
 
 export default clerkMiddleware((auth, request) => {

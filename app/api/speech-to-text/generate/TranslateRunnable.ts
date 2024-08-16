@@ -1,7 +1,7 @@
 import { HfInference } from "@huggingface/inference";
 import { Runnable, RunnableConfig } from "@langchain/core/runnables";
 
-import { TextToSpechResultType, TextToSpechResultExpandedType } from "./types";
+import { TextToSpechResultExpandedType } from "./types";
 
 const huggingfaceToken = process.env.HUGGING_FACE_TOKEN;
 
@@ -17,7 +17,7 @@ export class TranslateRunnable extends Runnable<
     options: RunnableConfig
   ): Promise<TextToSpechResultExpandedType> {
     try {
-      if (options?.configurable?.translateTo) {
+      if (options?.configurable?.translateToFr) {
         const response = await hf.translation(
           {
             model: "facebook/mbart-large-50-many-to-many-mmt",

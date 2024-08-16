@@ -6,7 +6,7 @@ import { huggingFaceRunnable } from "./HuggingFaceRunnable";
 import { summarizationRunnable } from "./SummarizeRunnable";
 export const POST = async (req: Request) => {
   try {
-    const { fileUrl, translateTo = "fr_FR" } = await req.json();
+    const { fileUrl, translateToFr = false } = await req.json();
     if (!fileUrl) {
       return NextResponse.json(
         {
@@ -25,7 +25,7 @@ export const POST = async (req: Request) => {
         { url: fileUrl },
         {
           configurable: {
-            translateTo,
+            translateToFr,
           },
         }
       );
