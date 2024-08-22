@@ -16,15 +16,16 @@ export class SummarizationRunnable extends Runnable<
     input: TextToSpechResultType
   ): Promise<TextToSpechResultExpandedType> {
     try {
+      console.log("Summarize input", input);
       const response = await hf.summarization(
         {
-          model: "facebook/bart-large-cnn",
           inputs: input.text,
         },
         {
           wait_for_model: true,
         }
       );
+      console.log("Data summarize", response);
       return {
         text: response.summary_text,
         originalText: input.text,

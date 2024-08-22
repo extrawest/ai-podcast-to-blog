@@ -33,7 +33,7 @@ export const POST = async (req: Request) => {
       status: 200,
       headers: {
         "Content-Type": "audio/mpeg",
-        "Content-Disposition": 'attachment; filename="output.mp3"',
+        "Content-Disposition": 'attachment; filename="result.mp3"',
         "Content-Length": audioBuffer.length.toString(),
       },
     });

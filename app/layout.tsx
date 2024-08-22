@@ -32,7 +32,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Header />
-            <div className="h-[calc(100vh-140px)] flex-grow overflow-scroll overflow-x-hidden">
+            <div className="h-[calc(100vh-140px)] flex-grow overflow-y-scroll overflow-x-hidden flex justify-center">
               {children}
             </div>
             <Footer />

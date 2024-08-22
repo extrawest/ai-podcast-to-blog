@@ -14,7 +14,6 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [podcasts, setPodcasts] = useState<Array<PodcastItemType>>([]);
-  const [selectedPodcastID, setSelectedPodcastID] = useState<string | null>(null);
   const [value] = useDebounce(search, 1000);
 
   const getPodcasts = async () => {
@@ -37,13 +36,18 @@ export default function Home() {
       getPodcasts();
   }, [value]);
 
-  const handleOnPodcastSelect = (podcastGuid: string) => {
-    setSelectedPodcastID(podcastGuid);
-  };
+  if (error) {
+    return (
+      <div>
+        Something went wrong, please try to refresh the page
+      </div>
+    )
+  }
 
   return (
-    <main className="flex flex-col items-center justify-between p-24">
+    <main className="flex flex-col items-center justify-between w-full">
       <div className="flex flex-col w-9/12">
+        EdTech Shorts
         <PodcastSearch
           search={search}
           disabled={loading}
@@ -62,7 +66,7 @@ export default function Home() {
             <div className="flex flex-col gap-4 mt-4">
               {
                 podcasts.map((podcast) => (
-                  <PodcastItem key={podcast.podcastGuid} {...podcast} onPodcastSelect={handleOnPodcastSelect} />
+                  <PodcastItem key={podcast.podcastGuid} {...podcast} showButton />
                 ))
               }
             </div>

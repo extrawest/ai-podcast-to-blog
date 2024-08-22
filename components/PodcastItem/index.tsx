@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -13,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { PodcastItemType } from "@/types";
 
 type PodcastItemCardType = PodcastItemType & {
-  onPodcastSelect: (podcastGuid: string) => void;
+  showButton?: boolean;
 };
 
 export const PodcastItem: FC<PodcastItemCardType> = ({
@@ -23,12 +24,13 @@ export const PodcastItem: FC<PodcastItemCardType> = ({
   link,
   title,
   categories,
+  showButton,
   episodeCount,
-  onPodcastSelect,
 }) => {
+  const router = useRouter();
 
   const handleOnPodcastSelect = () => {
-    onPodcastSelect(podcastGuid);
+    router.push(`/podcast/${podcastGuid}`);
   };
 
   return (
@@ -38,18 +40,21 @@ export const PodcastItem: FC<PodcastItemCardType> = ({
           <CardTitle>
             <div className="flex justify-between items-center">
               {title}
-              <Button
-                onClick={handleOnPodcastSelect}
-              >
-                Select
-              </Button>
+              {
+                showButton &&
+                <Button
+                  onClick={handleOnPodcastSelect}
+                >
+                  Select
+                </Button>
+              }
             </div>
           </CardTitle>
           <CardDescription>{author}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-row gap-6">
-            {image && <img className="w-32" src={image} alt={title} />}
+            {image && <img className="w-32 rounded-lg" src={image} alt={title} />}
             <div className="flex flex-col gap-2 justify-center">
               {link && <p><b>Website:</b> <a target='_blank' href={link}>{link}</a></p>}
               <div className="flex flex-row gap-4">

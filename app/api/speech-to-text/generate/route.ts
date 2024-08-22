@@ -34,8 +34,8 @@ export const POST = async (req: Request) => {
       message: "Success",
       success: true,
       data: {
-        text: response.text,
-        originalText: response.originalText,
+        text: response.text.toLowerCase(),
+        originalText: response.originalText.toLowerCase(),
       },
     });
   } catch (e) {
