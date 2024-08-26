@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import axios from "axios";
 import ReactPlayer from "react-player";
 
@@ -18,9 +18,27 @@ export const EpisodeItem: FC<EpisodeItemType> = ({ enclosureUrl, title, datePubl
   const [loading, setLoading] = useState<boolean>(false);
   const [audio, setAudio] = useState<string | null>(null);
   const [questions, setQuestions] = useState<QuestionType[]>([]);
+  const [imageLoading, setImageLoading] = useState<boolean>(false);
   const [speechLoading, setSpeechLoading] = useState<boolean>(false);
   const [chatVisibility, setChatVisibility] = useState<boolean>(false);
+  const [generatedImage, setImageGeneratedImage] = useState<string>("");
   const [translateToFrench, setTranslateToFrench] = useState<boolean>(false);
+
+  const handleImageGeneration = async (context: string) => {
+    try {
+      setImageLoading(true);
+      const imageResponse = await axios.post("/api/text-to-image/generate", { context }, {
+        responseType: "blob",
+      });
+      const url = URL.createObjectURL(imageResponse.data);
+      setImageGeneratedImage(url);
+    } catch (error) {
+      console.log(error);
+      setError("Something went wrong, please try again later");
+    } finally {
+      setImageLoading(false);
+    }
+  };
 
   const getEpisodeContent = async () => {
     try {
@@ -31,6 +49,7 @@ export const EpisodeItem: FC<EpisodeItemType> = ({ enclosureUrl, title, datePubl
       const { data } = response.data;
       data.text && setText(data.text);
       data.originalText && setContext(data.originalText);
+      handleImageGeneration(data.originalText);
     } catch (error) {
       console.log(error);
       setError("Something went wrong, please try again later");
@@ -71,8 +90,18 @@ export const EpisodeItem: FC<EpisodeItemType> = ({ enclosureUrl, title, datePubl
     setQuestions(newQuestions);
   }
 
-  const handleTranslation = () => {
+  const handleTranslation = async (value: boolean) => {
+    console.log(value);
+    try {
+      setLoading(true);
+      const response = await axios.post("/api/translate", { text, translateToFr: translateToFrench });
+      const { data } = response.data;
+      console.log(data);
+    } catch (error) {
 
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -137,13 +166,10 @@ export const EpisodeItem: FC<EpisodeItemType> = ({ enclosureUrl, title, datePubl
             ) : text && (
               <>
                 <div className="flex flex-row items-start gap-4">
-                  <div className={`${audio?.length ? "w-3/6" : "w-full"}`}>
-                    <h4 className="text-2xl font-bold mb-2">Episode summary</h4>
-                    <p>{text}</p>
-                  </div>
-                  <div className={`${audio?.length ? "w-3/6" : "w-1/12"}`}>
-                    {
-                      text && (
+                  <div className="w-full">
+                    <div className="flex items-center justify-between">
+                      <div className="flex flex-row gap-2">
+                        <h4 className="text-2xl font-bold mb-2">Episode summary</h4>
                         <Button
                           disabled={speechLoading}
                           onClick={getEpisodeSummarySpeech}
@@ -152,22 +178,43 @@ export const EpisodeItem: FC<EpisodeItemType> = ({ enclosureUrl, title, datePubl
                             speechLoading ? <Loader /> : <PlayCircle />
                           }
                         </Button>
-                      )
-                    }
-                    {
-                      audio && (
-                        <div className="mt-4">
-                          <h4 className="text-2xl font-bold mb-2">Listen to the summary</h4>
-                          <ReactPlayer
-                            url={audio}
-                            controls
-                            width="100%"
-                            height="50px"
-                          />
-                        </div>
-                      )
-                    }
+                      </div>
+                      <div className="flex flex-row gap-2">
+                        <p className="text-sm">En</p>
+                        <Switch disabled={loading} name="French" checked={translateToFrench} onCheckedChange={handleTranslation} />
+                        <p className="text-sm">Fr</p>
+                      </div>
+                    </div>
+                    <div className="flex flex-row gap-4">
+                      <div className="w-3/4">
+                        {
+                          imageLoading ? (
+                            <Skeleton className="h-40 w-full" />
+                          ) : generatedImage && (
+                            <img className="rounded-lg mt-2" src={generatedImage} alt="Fetched from API" />
+                          )
+                        }
+                      </div>
+                      <div className="w-2/4">
+                        <p className="mt-2">{text}</p>
+                      </div>
+                    </div>
                   </div>
+                </div>
+                <div>
+                  {
+                    audio && (
+                      <div className="mt-4">
+                        <h4 className="text-2xl font-bold mb-2">Listen to the summary</h4>
+                        <ReactPlayer
+                          url={audio}
+                          controls
+                          width="100%"
+                          height="50px"
+                        />
+                      </div>
+                    )
+                  }
                 </div>
               </>
             )

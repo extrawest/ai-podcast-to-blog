@@ -7,6 +7,8 @@ const isPublicRoute = createRouteMatcher([
   "/api/text-to-speech/generate",
   "/api/episode/list/by-podcast-guid",
   "/api/question/generate",
+  "/api/text-to-image/generate",
+  "/api/translate",
 ]);
 
 export default clerkMiddleware((auth, request) => {
