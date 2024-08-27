@@ -8,7 +8,9 @@ const hf = new HfInference(huggingfaceToken);
 export const POST = async (req: Request) => {
   try {
     const { text, translateToFr } = await req.json();
-    if (!text || !translateToFr) {
+    console.log(text);
+    console.log(translateToFr);
+    if (!text || (translateToFr !== true && translateToFr !== false)) {
       return NextResponse.json(
         {
           message: "Text and language are required",
