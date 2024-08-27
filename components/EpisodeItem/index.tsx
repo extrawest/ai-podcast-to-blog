@@ -22,6 +22,7 @@ export const EpisodeItem: FC<EpisodeItemType> = ({ enclosureUrl, title, datePubl
   const [speechLoading, setSpeechLoading] = useState<boolean>(false);
   const [chatVisibility, setChatVisibility] = useState<boolean>(false);
   const [generatedImage, setImageGeneratedImage] = useState<string>("");
+  const [translateLoading, setTranslateLoading] = useState<boolean>(false);
   const [translateToFrench, setTranslateToFrench] = useState<boolean>(false);
 
   const handleImageGeneration = async (context: string) => {
@@ -92,15 +93,16 @@ export const EpisodeItem: FC<EpisodeItemType> = ({ enclosureUrl, title, datePubl
 
   const handleTranslation = async (value: boolean) => {
     try {
-      setLoading(true);
+      setTranslateLoading(true);
       const response = await axios.post("/api/translate", { text, translateToFr: value });
       const { data } = response.data;
       setText(data.text);
       setTranslateToFrench(value);
     } catch (error) {
-
+      console.log(error);
+      setError("Something went wrong, please try again later");
     } finally {
-      setLoading(false);
+      setTranslateLoading(false);
     }
   };
 
@@ -196,7 +198,13 @@ export const EpisodeItem: FC<EpisodeItemType> = ({ enclosureUrl, title, datePubl
                         }
                       </div>
                       <div className="w-2/4">
-                        <p className="mt-2">{text}</p>
+                        {
+                          translateLoading ? (
+                            <Skeleton className="h-4 w-full" />
+                          ) : (
+                            <p className="mt-2">{text}</p>
+                          )
+                        }
                       </div>
                     </div>
                   </div>
