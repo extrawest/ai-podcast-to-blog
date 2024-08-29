@@ -96,8 +96,8 @@ export const EpisodeItem: FC<EpisodeItemType> = ({ enclosureUrl, title, datePubl
       setTranslateLoading(true);
       const response = await axios.post("/api/translate", { text, translateToFr: value });
       const { data } = response.data;
-      setText(data.text);
       setTranslateToFrench(value);
+      setText(data.text);
     } catch (error) {
       console.log(error);
       setError("Something went wrong, please try again later");
@@ -183,7 +183,7 @@ export const EpisodeItem: FC<EpisodeItemType> = ({ enclosureUrl, title, datePubl
                       </div>
                       <div className="flex flex-row gap-2">
                         <p className="text-sm">En</p>
-                        <Switch disabled={loading} name="French" checked={translateToFrench} onCheckedChange={handleTranslation} />
+                        <Switch disabled={loading || translateLoading} name="French" checked={translateToFrench} onCheckedChange={handleTranslation} />
                         <p className="text-sm">Fr</p>
                       </div>
                     </div>

@@ -8,8 +8,6 @@ const hf = new HfInference(huggingfaceToken);
 export const POST = async (req: Request) => {
   try {
     const { text, translateToFr } = await req.json();
-    console.log(text);
-    console.log(translateToFr);
     if (!text || (translateToFr !== true && translateToFr !== false)) {
       return NextResponse.json(
         {
