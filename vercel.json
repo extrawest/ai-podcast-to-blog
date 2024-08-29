@@ -2,6 +2,10 @@
     "functions": {
       "app/*/*.ts": {
         "maxDuration": 60
-      }
+      },
+      "api/*.js": {
+      "memory": 3009,
+      "maxDuration": 30
+    }
     }
   }
