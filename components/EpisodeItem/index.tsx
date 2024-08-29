@@ -93,6 +93,7 @@ export const EpisodeItem: FC<EpisodeItemType> = ({ enclosureUrl, title, datePubl
 
   const handleTranslation = async (value: boolean) => {
     try {
+      setError("");
       setTranslateLoading(true);
       const response = await axios.post("/api/translate", { text, translateToFr: value });
       const { data } = response.data;
