@@ -31,26 +31,19 @@ This project takes podcast episodes from the Podcast Index, converts the audio i
 
 ## Installation
 
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/your-username/podcast-summary-app.git
-   cd podcast-summary-app
-   ```
-
-2. Install dependencies:
+1. Install dependencies:
 
    ```bash
    npm install
    ```
 
-3. Start the development server:
+2. Start the development server:
 
    ```bash
    npm run dev
    ```
 
-4. Visit `http://localhost:3000` to access the app.
+3. Visit `http://localhost:3000` to access the app.
 
 ## How It Works
 
