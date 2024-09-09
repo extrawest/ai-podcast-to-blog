@@ -1,9 +1,9 @@
-import { HfInference } from "@huggingface/inference";
+import { vertexAI } from "@/vertex";
 import { NextResponse } from "next/server";
 
-const huggingfaceToken = process.env.HUGGING_FACE_TOKEN;
-
-const hf = new HfInference(huggingfaceToken);
+const model = vertexAI.getGenerativeModel({
+  model: "gemini-1.5-flash",
+});
 
 export const POST = async (req: Request) => {
   try {
@@ -17,33 +17,33 @@ export const POST = async (req: Request) => {
         { status: 400 }
       );
     }
-    const parameters = {
-      src_lang: translateToFr ? "en_XX" : "fr_XX",
-      tgt_lang: translateToFr ? "fr_XX" : "en_XX",
-    };
-    const response = await hf.translation(
-      {
-        model: "facebook/mbart-large-50-many-to-many-mmt",
-        inputs: text,
-        // @ts-ignore: Poor typing in the library
-        parameters,
-      },
-      {
-        wait_for_model: true,
-      }
-    );
+    const prompt = `Translate this: "${text}" to the ${
+      translateToFr ? "french" : "english"
+    }`;
+    const response = await model.generateContent({
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: prompt }],
+        },
+      ],
+      systemInstruction:
+        "You are a helpful assistant. You should translate the text to the language specified by the user. Only return the translation, no need to repeat the text.",
+    });
+    const responseText =
+      response?.response?.candidates?.[0].content.parts[0].text;
+
     return NextResponse.json(
       {
         data: {
-          text: Array.isArray(response)
-            ? response[0].translation_text
-            : response.translation_text,
+          text: responseText,
         },
         success: true,
       },
       { status: 200 }
     );
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { error: "Something went wrong, please try again later" },
       { status: 500 }

@@ -29,7 +29,7 @@ export const Question: FC<QuestionProps> = ({
         question: questionText,
         context,
       });
-      onQuestionSubmit({ id, question: questionText, answer: response.data.data.answer });
+      onQuestionSubmit({ id, question: questionText, answer: response.data.data.text });
     } catch (error) {
 
     } finally {

@@ -37,7 +37,7 @@ export type AnswerResponse = {
   message: string;
   success: boolean;
   data: {
-    answer: Answer;
+    text: Answer;
   };
   error?: any;
 };

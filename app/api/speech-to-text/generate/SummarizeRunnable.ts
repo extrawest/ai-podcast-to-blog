@@ -1,11 +1,11 @@
-import { HfInference } from "@huggingface/inference";
+import { vertexAI } from "@/vertex";
 import { Runnable, RunnableConfig } from "@langchain/core/runnables";
 
 import { TextToSpechResultType, TextToSpechResultExpandedType } from "./types";
 
-const huggingfaceToken = process.env.HUGGING_FACE_TOKEN;
-
-const hf = new HfInference(huggingfaceToken);
+const model = vertexAI.getGenerativeModel({
+  model: "gemini-1.5-flash",
+});
 
 export class SummarizationRunnable extends Runnable<
   TextToSpechResultType,
@@ -17,17 +17,19 @@ export class SummarizationRunnable extends Runnable<
   ): Promise<TextToSpechResultExpandedType> {
     try {
       console.log("Summarize input", input);
-      const response = await hf.summarization(
-        {
-          inputs: input.text,
-        },
-        {
-          wait_for_model: true,
-        }
-      );
+      const response = await model.generateContent({
+        contents: [
+          {
+            role: "user",
+            parts: [{ text: input.text }],
+          },
+        ],
+        systemInstruction:
+          "You are a helpful assistant. You should summarize the text. Only return the summary, no need to repeat the text.",
+      });
       console.log("Data summarize", response);
       return {
-        text: response.summary_text,
+        text: response.response?.candidates?.[0].content.parts[0].text || "",
         originalText: input.text,
       };
     } catch (error) {
