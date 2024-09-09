@@ -19,7 +19,7 @@ export const POST = async (req: Request) => {
       );
     }
 
-    const prompt = `You are a helpful assistant. You should answer the question based on the provided context. Here is the context:\n\n"${context}"`;
+    const systemInstruction = `You are a helpful assistant. You should answer the question based on the provided context. Here is the context:\n\n"${context}"`;
     const userPrompt = `Answer the question: ${question}`;
 
     const respose = await model.generateContent({
@@ -29,7 +29,7 @@ export const POST = async (req: Request) => {
           parts: [{ text: userPrompt }],
         },
       ],
-      systemInstruction: prompt,
+      systemInstruction,
     });
 
     const text = respose?.response?.candidates?.[0].content.parts[0].text;

@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 
 import { downloadRunnable } from "./DownloadRunnable";
 import { translateRunnable } from "./TranslateRunnable";
-import { huggingFaceRunnable } from "./HuggingFaceRunnable";
 import { summarizationRunnable } from "./SummarizeRunnable";
+import { speechRecognitionRunnable } from "./SpeechRecognitionRunnable";
 export const POST = async (req: Request) => {
   try {
     const { fileUrl, translateToFr = false } = await req.json();
@@ -18,7 +18,7 @@ export const POST = async (req: Request) => {
     }
 
     const response = await downloadRunnable
-      .pipe(huggingFaceRunnable)
+      .pipe(speechRecognitionRunnable)
       .pipe(summarizationRunnable)
       .pipe(translateRunnable)
       .invoke(

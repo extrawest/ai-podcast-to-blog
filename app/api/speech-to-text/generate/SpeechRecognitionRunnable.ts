@@ -12,7 +12,7 @@ const huggingfaceToken = process.env.HUGGING_FACE_TOKEN;
 
 const hf = new HfInference(huggingfaceToken);
 
-export class HuggingFaceRunnable extends Runnable<
+export class SpeechRecognitionRunnable extends Runnable<
   AudioFileResponseType,
   TextToSpechResultType,
   RunnableConfig
@@ -45,4 +45,4 @@ export class HuggingFaceRunnable extends Runnable<
   }
 }
 
-export const huggingFaceRunnable = new HuggingFaceRunnable();
+export const speechRecognitionRunnable = new SpeechRecognitionRunnable();

@@ -21,6 +21,8 @@ export class TranslateRunnable extends Runnable<
         const prompt = `Translate this: "${input.text.toLowerCase()}" to the ${
           options?.configurable?.translateToFr ? "french" : "english"
         }`;
+        const systemInstruction =
+          "You are a helpful assistant. You should translate the text to the language specified by the user. Only return the translation, no need to repeat the text.";
         const response = await model.generateContent({
           contents: [
             {
@@ -28,8 +30,7 @@ export class TranslateRunnable extends Runnable<
               parts: [{ text: prompt }],
             },
           ],
-          systemInstruction:
-            "You are a helpful assistant. You should translate the text to the language specified by the user. Only return the translation, no need to repeat the text.",
+          systemInstruction,
         });
         const responseText =
           response?.response?.candidates?.[0].content.parts[0].text;

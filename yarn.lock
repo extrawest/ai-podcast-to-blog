@@ -338,6 +338,18 @@
   resolved "https://registry.yarnpkg.com/@google-cloud/promisify/-/promisify-4.0.0.tgz#a906e533ebdd0f754dca2509933334ce58b8c8b1"
   integrity sha512-Orxzlfb9c67A15cq2JQEyVc7wEsmFBmHjZWZYQMUyJ1qivXyMwdyNOs9odi79hze+2zqdTtu1E19IM/FtqZ10g==
 
+"@google-cloud/speech@^6.7.0":
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/@google-cloud/speech/-/speech-6.7.0.tgz#d35edb9c3856cbd155b897341f814bf3b4687ef2"
+  integrity sha512-rLCVYD5vAoHkhHHkg/12lZckduhYCOZWxk/sIxBeS5nMSIlsrixPml/wbm6el7/8l8oNsKaiLzj+B5ABXmipRg==
+  dependencies:
+    "@google-cloud/common" "^5.0.0"
+    "@types/pumpify" "^1.4.1"
+    google-gax "^4.0.3"
+    pumpify "^2.0.0"
+    stream-events "^1.0.4"
+    uuid "^9.0.0"
+
 "@google-cloud/storage@^7.7.0":
   version "7.12.1"
   resolved "https://registry.yarnpkg.com/@google-cloud/storage/-/storage-7.12.1.tgz#7963bdc3b5266e4698047f6158a043d53231ec9c"
@@ -1208,6 +1220,13 @@
   resolved "https://registry.npmjs.org/@types/crypto-js/-/crypto-js-4.2.2.tgz"
   integrity sha512-sDOLlVbHhXpAUAL0YHDUUwDZf3iN4Bwi4W6a0W0b+QcAezUbRtH4FVb+9J4h+XFPW7l/gQ9F8qC7P+Ec4k8QVQ==
 
+"@types/duplexify@*":
+  version "3.6.4"
+  resolved "https://registry.yarnpkg.com/@types/duplexify/-/duplexify-3.6.4.tgz#aa7e916c33fcc05be8769546fd0441d9b368613e"
+  integrity sha512-2eahVPsd+dy3CL6FugAzJcxoraWhUghZGEQJns1kTKfCXWKJ5iG/VkaB05wRVrDKHfOFKqb0X0kXh91eE99RZg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/express-serve-static-core@^4.17.33":
   version "4.19.5"
   resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.19.5.tgz#218064e321126fcf9048d1ca25dd2465da55d9c6"
@@ -1324,6 +1343,14 @@
   version "15.7.12"
   resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.12.tgz"
   integrity sha512-5zvhXYtRNRluoE/jAp4GVsSduVUzNWKkOZrCDBWYtE7biZywwdC2AcEzg+cSMLFRfVgeAFqpfNabiPjxFddV1Q==
+
+"@types/pumpify@^1.4.1":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@types/pumpify/-/pumpify-1.4.4.tgz#2246750e9380a1f885bf43c58cb31ddbb280d4a7"
+  integrity sha512-+cWbQUecD04MQYkjNBhPmcUIP368aloYmqm+ImdMKA8rMpxRNAhZAD6gIj+sAVTF1DliqrT/qUp6aGNi/9U3tw==
+  dependencies:
+    "@types/duplexify" "*"
+    "@types/node" "*"
 
 "@types/qs@*", "@types/qs@^6.9.7":
   version "6.9.15"
@@ -4991,6 +5018,15 @@ pump@^3.0.0:
     end-of-stream "^1.1.0"
     once "^1.3.1"
 
+pumpify@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/pumpify/-/pumpify-2.0.1.tgz#abfc7b5a621307c728b551decbbefb51f0e4aa1e"
+  integrity sha512-m7KOje7jZxrmutanlkS1daj1dS6z6BgslzOXmcSEpIlCxM3VJH7lG5QLeck/6hgF6F4crFf01UtQmNsJfweTAw==
+  dependencies:
+    duplexify "^4.1.1"
+    inherits "^2.0.3"
+    pump "^3.0.0"
+
 punycode@^2.1.0:
   version "2.3.1"
   resolved "https://registry.npmjs.org/punycode/-/punycode-2.3.1.tgz"
@@ -5500,7 +5536,7 @@ stop-iteration-iterator@^1.0.0:
   dependencies:
     internal-slot "^1.0.4"
 
-stream-events@^1.0.5:
+stream-events@^1.0.4, stream-events@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/stream-events/-/stream-events-1.0.5.tgz#bbc898ec4df33a4902d892333d47da9bf1c406d5"
   integrity sha512-E1GUzBSgvct8Jsb3v2X15pjzN1tYebtbLaMg+eBOUOAxgbLoSbT2NS91ckc5lJD1KfLjId+jXJRgo0qnV5Nerg==

@@ -12,6 +12,7 @@
     "@clerk/nextjs": "^5.3.1",
     "@genkit-ai/core": "^0.5.11",
     "@genkit-ai/vertexai": "^0.5.11",
+    "@google-cloud/speech": "^6.7.0",
     "@huggingface/inference": "^2.8.0",
     "@langchain/community": "^0.2.27",
     "@langchain/core": "^0.2.23",
